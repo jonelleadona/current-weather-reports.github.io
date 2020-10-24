@@ -15,4 +15,10 @@
 
 #fiveDayForcast {
   padding-top: 25px;
+  visibility: hidden;
+}
+ 
+
+#cities {
+  display: none;
 }
