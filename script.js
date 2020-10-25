@@ -1,33 +1,61 @@
-var APIkey= "4d53ae91e1c539753bb289aa91936edd";
+var APIkey = "4d53ae91e1c539753bb289aa91936edd";
+var storedCitiesNum = 0;
+var citiesMaxNum = 5;
 
-// Creates an event lister got search button response
-$("#searchBtn").on("click", function()
+// Count the number of cities currently in local storage
+var cityHistoryString = localStorage.getItem("previousCities");
+
+if (cityHistoryString === null)
 {
-  // Grabs user input 
-  var varCity= $("#searchTxt").val();
+  cityHistoryString = "";
+}
 
-  // Retrieve City values from storage to update it back into storage
-  var previousCities = localStorage.getItem("previousCities");
-  // Appends new city to string 
-  previousCities += varCity;
-  localStorage.setItem("previousCities", previousCities); 
-
-  $("#searchOne").on("click", function()
+for (var i = 0; i < cityHistoryString.length; ++i)
+{
+  if (cityHistoryString[i] === ";")
   {
+    ++storedCitiesNum;
+  }
+}
 
-  });
+// Display the search history
+displayHistory();
 
-  // API call for current weather
+// Parses city string from local storage and display
+function displayHistory()
+{
+  var previousCities = localStorage.getItem("previousCities");
+  var i = 1;
+  
+  while (previousCities !== "" && previousCities !== null)
+  {
+    var currentCity = previousCities.substring(0, previousCities.indexOf(";"));
+    $("#city" + i).text(currentCity);
+    $("#city" + i).css("visibility", "visible");
+    previousCities = previousCities.substring(previousCities.indexOf(";") + 1);
+    ++i;
+  }
+}
+
+// Performs API calls to retrieve weather information
+function retrieveWeatherData(city)
+{
   $.ajax({
-    url: `https://api.openweathermap.org/data/2.5/weather?q=${varCity}&appid=${APIkey}`,
+    url: `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${APIkey}&units=imperial`,
     method: "GET"
   }).then(
 
     function(response) {
-      $("#cityHeader").text(response.name + " " + moment().format('(L)'));
-      $("#temp").text("Temperature: " + (((response.main.temp - 273.15) * 1.8) + 32).toFixed(1) + " \u00B0F");
-      $("#humidity").text("Humidity: " + response.main.humidity + "%");
-      $("#windSpeed").text("Wind Speed: " + response.wind.speed + " MPH");
+      $(".currentDay").find(".city").text(response.name + " " + moment().format('(L)'));
+      $(".currentDay").find(".icon").attr({
+        src: "http://openweathermap.org/img/w/" + response.weather[0].icon + ".png",
+        alt: response.weather[0].description
+      });
+      $(".currentDay").find(".temp").text("Temperature: " + (response.main.temp).toFixed(1) + " \u00B0F");
+      $(".currentDay").find(".humidity").text("Humidity: " + response.main.humidity + "%");
+      $(".currentDay").find(".windSpeed").text("Wind Speed: " + response.wind.speed + " MPH");
+
+      console.log(response);
       
       // API call for UV index
       $.ajax({
@@ -36,7 +64,7 @@ $("#searchBtn").on("click", function()
       }).then(
         // Determines the UV index color
         function(UVresponse) {
-          $("#UV").text("UV index: ");
+          $(".currentDay").find(".UV").text("UV index: ");
           
           var UVrating="";
 
@@ -60,45 +88,35 @@ $("#searchBtn").on("click", function()
             id: "UVseverity"
           });
 
-          $("#UV").append(UVbox);
+          $(".currentDay").find(".UV").append(UVbox);
           $("#UVseverity").append(document.createTextNode(UVresponse.value));
         }
       )
 
       // API call for 5 day/ 3 hour forcast
       $.ajax({
-        url: `http://api.openweathermap.org/data/2.5/forecast?q=${varCity}&appid=${APIkey}&units=imperial`,
+        url: `http://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${APIkey}&units=imperial`,
         method: "GET" 
       }).then(
-
         function(responseForcast) {
-          console.log(responseForcast);
-          $("#dayOne").text((responseForcast.list[1].main.temp).toFixed(1) + "\u00B0F");
-          $("#dayOneDate").text((moment(responseForcast.list[1].dt_txt)).format("L"));
-          $("#dayOneHumidity").text("Humidity: " + responseForcast.list[1].main.humidity + "%");
-          $("#dayOneTemp").text("Temp: " + (responseForcast.list[1].main.temp).toFixed(1) + "\u00B0F");
+          //console.log(responseForcast);
 
-          $("#dayTwo").text((responseForcast.list[6].main.temp).toFixed(1) + "\u00B0F");
-          $("#dayTwoDate").text((moment(responseForcast.list[6].dt_txt)).format("L"));
-          $("#dayTwoHumidity").text("Humidity: " + responseForcast.list[6].main.humidity + "%");
-          $("#dayTwoTemp").text("Temp: " + (responseForcast.list[6].main.temp).toFixed(1) + "\u00B0F");
-        
-          $("#dayThree").text((responseForcast.list[14].main.temp).toFixed(1) + "\u00B0F");
-          $("#dayThreeDate").text((moment(responseForcast.list[14].dt_txt)).format("L"));
-          $("#dayThreeHumidity").text("Humidity: " + responseForcast.list[14].main.humidity + "%");
-          $("#dayThreeTemp").text("Temp: " + (responseForcast.list[14].main.temp).toFixed(1) + "\u00B0F");
-        
-          $("#dayFour").text((responseForcast.list[22].main.temp).toFixed(1) + "\u00B0F");
-          $("#dayFourDate").text((moment(responseForcast.list[22].dt_txt)).format("L"));
-          $("#dayFourHumidity").text("Humidity: " + responseForcast.list[22].main.humidity + "%");
-          $("#dayFourTemp").text("Temp: " + (responseForcast.list[22].main.temp).toFixed(1) + "\u00B0F");
-        
-          $("#dayFive").text((responseForcast.list[30].main.temp).toFixed(1) + "\u00B0F");
-          $("#dayFiveDate").text((moment(responseForcast.list[30].dt_txt)).format("L"));
-          $("#dayFiveHumidity").text("Humidity: " + responseForcast.list[30].main.humidity + "%");
-          $("#dayFiveTemp").text("Temp: " + (responseForcast.list[30].main.temp).toFixed(1) + "\u00B0F");
+          var filterList = responseForcast.list.filter(function(date){
+            return date.dt_txt.indexOf("03:00:00") > -1;
+          });
+            //console.log(filterList);
+          
+          filterList.forEach(function(date, i){
+            $(".day" + (i+1)).find(".date").text(moment(date.dt_txt).format('L'));
+            $(".day" + (i+1)).find(".icon").attr({
+              src: "http://openweathermap.org/img/w/" + date.weather[0].icon + ".png",
+              alt: date.weather[0].description
+            });
+            $(".day" + (i+1)).find(".temp").text("Temp: " + date.main.temp + "\u00B0F");
+            $(".day" + (i+1)).find(".humidity").text("Humidity: " + date.main.humidity + "%");
+          });
 
-          $("#fiveDayForcast").css("visibility", "visible");
+          $("#fiveDayForcast").css("visibility", "visible"); 
         }
       )
     },
@@ -108,4 +126,46 @@ $("#searchBtn").on("click", function()
       alert("Failed to retrieve data");
     }
   )
+}
+
+// Creates an event listener for search button response
+$("#searchBtn").on("click", function()
+{
+  // Grabs user input 
+  var varCity = $("#searchTxt").val();
+
+  // Retrieve City values from storage to update it back into storage
+  var previousCities = localStorage.getItem("previousCities");
+
+  // If local storage is empty, getItem() returns null, so previousCities = null
+  // That'd cause code to break so we want to set previousCities to an empty string instead
+  if (storedCitiesNum === 0)
+  {
+    previousCities = "";
+  }
+
+  // Appends new city to string 
+  previousCities += (varCity + ";");
+  ++storedCitiesNum;
+
+  if (storedCitiesNum > citiesMaxNum)
+  {
+    previousCities = previousCities.substring(previousCities.indexOf(";") + 1);
+    --storedCitiesNum;
+  };
+
+  localStorage.setItem("previousCities", previousCities);
+  
+  displayHistory();
+
+  // API call for current weather
+  retrieveWeatherData(varCity);
 });
+
+for (var i = 1; i < 6; ++i)
+{
+  $("#city" + i).on("click", function()
+  {
+    retrieveWeatherData(this.textContent);
+  });
+}

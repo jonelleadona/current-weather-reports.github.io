@@ -20,5 +20,5 @@
  
 
 #cities {
-  display: none;
+  visibility: hidden;
 }

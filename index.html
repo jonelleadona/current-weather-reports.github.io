@@ -25,70 +25,75 @@
           </div>
           <br>
           <div id="cities">
-            <a href="searchOne" class="list-group-item list-group-item-action"></a>
-            <a href="searchTwo" class="list-group-item list-group-item-action"></a>
-            <a href="searchThree" class="list-group-item list-group-item-action"></a>
-            <a href="SearchFour" class="list-group-item list-group-item-action"></a>
-            <a href="searchFive" class="list-group-item list-group-item-action"></a>
-            <a href="searchSix" class="list-group-item list-group-item-action"></a>
-            <a href="searchSeven" class="list-group-item list-group-item-action"></a>
+            <button type="button" id="city1" class="list-group-item list-group-item-action"></button>
+            <button type="button" id="city2" class="list-group-item list-group-item-action"></button>
+            <button type="button" id="city3" class="list-group-item list-group-item-action"></button>
+            <button type="button" id="city4" class="list-group-item list-group-item-action"></button>
+            <button type="button" id="city5" class="list-group-item list-group-item-action"></button>
           </div>
         </aside>
-        <!-- Adds card container -->
+        
         <div class="col col-lg-9">
+          <!-- Current weather -->
           <div class="card">
-            <div class="card-body">
-              <h3 id="cityHeader"></h3>
-              <p id="temp"></p>
-              <p id="humidity"></p>
-              <p id="windSpeed"></p>
-              <p id="UV"></p>
+            <div class="card-body currentDay">
+              <h3 class="city"></h3>
+              <img class="icon" src="" alt="" />
+              <p class="temp"></p>
+              <p class="humidity"></p>
+              <p class="windSpeed"></p>
+              <p class="UV"></p>
             </div>
           </div>
-
+          <!-- 5 Day Forecast  -->
           <div class="row" id="fiveDayForcast">
             <div class="col-sm">
               <div class="card">
-                <div class="card-body">
-                  <h5 id="dayOneDate"></h5>
-                  <p id="dayOneTemp"></p>
-                  <p id="dayOneHumidity"></p>
+                <div class="card-body day1">
+                  <h5 class="date"></h5>
+                  <img class="icon" src="" alt="" />
+                  <p class="temp"></p>
+                  <p class="humidity"></p>
                 </div>
               </div>
             </div>
             <div class="col-sm">
               <div class="card">
-                <div class="card-body">
-                  <h5 id="dayTwoDate"></h5>
-                  <p id="dayTwoTemp"></p>
-                  <p id="dayTwoHumidity"></p>
+                <div class="card-body day2">
+                  <h5 class="date"></h5>
+                  <img class="icon" src="" alt="" />
+                  <p class="temp"></p>
+                  <p class="humidity"></p>
                 </div>
               </div>
             </div>
             <div class="col-sm">
               <div class="card">
-                <div class="card-body">
-                  <h5 id="dayThreeDate"></h5>
-                  <p id="dayThreeTemp"></p>
-                  <p id="dayThreeHumidity"></p>
+                <div class="card-body day3">
+                  <h5 class="date"></h5>
+                  <img class="icon" src="" alt="" />
+                  <p class="temp"></p>
+                  <p class="humidity"></p>
                 </div>
               </div>
             </div>
             <div class="col-sm">
               <div class="card">
-                <div class="card-body">
-                  <h5 id="dayFourDate"></h5>
-                  <p id="dayFourTemp"></p>
-                  <p id="dayFourHumidity"></p>
+                <div class="card-body day4">
+                  <h5 class="date"></h5>
+                  <img class="icon" src="" alt="" />
+                  <p class="temp"></p>
+                  <p class="humidity"></p>
                 </div>
               </div>
             </div>
             <div class="col-sm">
               <div class="card">
-                <div class="card-body">
-                  <h5 id="dayFiveDate"></h5>
-                  <p id="dayFiveTemp"></p>
-                  <p id="dayFiveHumidity"></p>
+                <div class="card-body day5">
+                  <h5 class="date"></h5>
+                  <img class="icon" src="" alt="" />
+                  <p class="temp"></p>
+                  <p class="humidity"></p>
                 </div>
               </div>
             </div>
