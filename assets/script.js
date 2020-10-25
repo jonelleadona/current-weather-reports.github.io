@@ -48,7 +48,7 @@ function retrieveWeatherData(city)
     function(response) {
       $(".currentDay").find(".city").text(response.name + " " + moment().format('(L)'));
       $(".currentDay").find(".icon").attr({
-        src: "http://openweathermap.org/img/w/" + response.weather[0].icon + ".png",
+        src: "https://openweathermap.org/img/w/" + response.weather[0].icon + ".png",
         alt: response.weather[0].description
       });
       $(".currentDay").find(".temp").text("Temperature: " + (response.main.temp).toFixed(1) + " \u00B0F");
@@ -59,7 +59,7 @@ function retrieveWeatherData(city)
       
       // API call for UV index
       $.ajax({
-        url: `http://api.openweathermap.org/data/2.5/uvi?lat=${response.coord.lat}&lon=${response.coord.lon}&appid=${APIkey}`,
+        url: `https://api.openweathermap.org/data/2.5/uvi?lat=${response.coord.lat}&lon=${response.coord.lon}&appid=${APIkey}`,
         method: "GET"
       }).then(
         // Determines the UV index color
@@ -95,7 +95,7 @@ function retrieveWeatherData(city)
 
       // API call for 5 day/ 3 hour forcast
       $.ajax({
-        url: `http://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${APIkey}&units=imperial`,
+        url: `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${APIkey}&units=imperial`,
         method: "GET" 
       }).then(
         function(responseForcast) {
@@ -109,7 +109,7 @@ function retrieveWeatherData(city)
           filterList.forEach(function(date, i){
             $(".day" + (i+1)).find(".date").text(moment(date.dt_txt).format('L'));
             $(".day" + (i+1)).find(".icon").attr({
-              src: "http://openweathermap.org/img/w/" + date.weather[0].icon + ".png",
+              src: "https://openweathermap.org/img/w/" + date.weather[0].icon + ".png",
               alt: date.weather[0].description
             });
             $(".day" + (i+1)).find(".temp").text("Temp: " + date.main.temp + "\u00B0F");
