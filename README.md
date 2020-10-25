@@ -9,4 +9,4 @@ This weeks assignment was a responsive weather dashboard. The dashboard includes
 - The user can redirect back to old searches by clicking on the list of previous cities under the search bar
 
 
-![](.assets/weather-demo.gif)
+![](assets/weather-demo.gif)
