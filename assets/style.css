@@ -1,0 +1,24 @@
+.favorable {
+  background-color: rgb(68, 202, 68);
+
+}
+
+.moderate {
+  background-color: rgb(253, 253, 86);
+
+}
+
+.severe {
+  background-color: tomato;
+
+}
+
+#fiveDayForcast {
+  padding-top: 25px;
+  visibility: hidden;
+}
+ 
+
+#cities {
+  visibility: hidden;
+}
